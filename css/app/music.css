@@ -1,0 +1,84 @@
+.app__music {
+    --background: #fff;
+
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+    background-color: var(--background);
+}
+
+/* track component */
+.track__cd {
+    position: relative;
+    margin: 0;
+    user-select: none;
+}
+
+.track__cd::before {
+    content: "";
+    display: block;
+    border-radius: 50%;
+    width: 9rem;
+    height: 9rem;
+    backdrop-filter: blur(4px);
+    z-index: 1;
+
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.track__cd::after {
+    content: "";
+    display: block;
+    border-radius: 50%;
+    width: 4rem;
+    height: 4rem;
+
+    position: absolute;
+    background: var(--background);
+    z-index: 1;
+
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.track__cd img {
+    position: relative;
+    border-radius: 50%;
+    border: 1px solid #eee;
+    height: 22rem;
+    width: 22rem;
+    object-fit: cover;
+
+    animation: 30s util-spin infinite linear;
+}
+
+.track__sound {
+    width: 100%;
+    height: 2rem;
+    /* background: red; */
+}
+
+.track__time {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.track__title {
+    margin: 0;
+}
+
+/*                 <main class="track">
+
+                    <div class="track__sound"></div>
+                    <div class="track__time">
+                        <time>00:00</time>
+                        <time>00:00</time>
+                    </div>
+
+                    <p class="track__title">Untitled Song</p>
+                </main> */

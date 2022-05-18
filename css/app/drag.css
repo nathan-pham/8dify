@@ -1,27 +1,3 @@
-#app {
-    height: 100vh;
-    width: 100vw;
-    font-family: sans-serif;
-}
-
-/* utilities */
-.util-center {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-}
-
-a,
-.util-link {
-    color: #375de7;
-    cursor: pointer;
-}
-
-.util-link:hover {
-    text-decoration: underline;
-}
-
 /* drag component */
 .drag {
     display: flex;
@@ -42,8 +18,8 @@ a,
 
 .drag:hover,
 .drag-highlight {
-    border: 1px solid #375de7;
-    box-shadow: 0 0.5rem 1rem #375de72f;
+    border: 1px solid var(--primary);
+    box-shadow: 0 0.5rem 1rem var(--primary-shadow);
     transform: translateY(-0.5rem);
 }
 

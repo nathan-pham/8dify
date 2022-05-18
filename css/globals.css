@@ -1,3 +1,8 @@
+:root {
+    --primary: #375de7;
+    --primary-shadow: #375de72f;
+}
+
 html,
 body {
     height: 100%;
@@ -11,4 +16,62 @@ body {
 ::before,
 ::after {
     box-sizing: inherit;
+}
+
+#app {
+    height: 100vh;
+    width: 100vw;
+    font-family: sans-serif;
+}
+
+#app > div {
+    display: none;
+}
+
+#app > div.app-tab {
+    display: block;
+}
+
+/* utilities */
+.util-center {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.util-center-children {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.util-flex-col {
+    flex-direction: column;
+}
+
+.util-screen {
+    height: 100vh;
+    width: 100vw;
+}
+
+a,
+.util-link {
+    color: var(--primary);
+    cursor: pointer;
+}
+
+.util-link:hover {
+    text-decoration: underline;
+}
+
+/* animations */
+@keyframes util-spin {
+    from {
+        transform: rotate(0);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
 }

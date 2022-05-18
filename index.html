@@ -11,13 +11,38 @@
         <title>8dify</title>
 
         <link rel="stylesheet" href="/css/globals.css" />
-        <link rel="stylesheet" href="/css/index.css" />
+
+        <!-- app page styles -->
+        <link rel="stylesheet" href="/css/app/music.css" />
+        <link rel="stylesheet" href="/css/app/drag.css" />
 
         <script type="module" src="/js/app.js"></script>
     </head>
     <body>
         <div id="app">
-            <div class="util-center">
+            <!-- all immediate children are app pages -->
+            <div class="app__music">
+                <div class="util-center-children util-screen">
+                    <main class="track">
+                        <div class="track__cd">
+                            <img
+                                alt="Random Unsplash Image"
+                                src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII="
+                            />
+                        </div>
+
+                        <div class="track__sound"></div>
+                        <div class="track__time">
+                            <time>00:00</time>
+                            <time>00:00</time>
+                        </div>
+
+                        <p class="track__title">Untitled Song</p>
+                    </main>
+                </div>
+            </div>
+
+            <div class="app__drag util-center app-tab">
                 <div class="drag">
                     <svg
                         width="15"
@@ -45,6 +70,7 @@
                             name="drag__form__input"
                             type="file"
                             accept=".mp3"
+                            multiple
                         />
                     </form>
                 </div>
