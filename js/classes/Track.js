@@ -1,4 +1,5 @@
 import TrackVisualizer from "./TrackVisualizer.js";
+import { $ } from "../utils/query.js";
 
 export default class Track {
     name = "Untitled Track";

@@ -5,6 +5,7 @@ import { $, $$ } from "./utils/query.js";
 import * as icons from "./libs/icons.js";
 
 import gsap from "https://esm.sh/gsap";
+import Sortable from "https://esm.sh/sortablejs";
 
 const state = {
     currentTab: null,
@@ -93,6 +94,14 @@ const app = {
         // menu toggle
         const menuToggle = $(tabs.music, ".menu__toggle");
         const menuTracks = $(tabs.music, ".menu__content__tracks");
+        menuTracks.innerHTML = state.tracks
+            .map(({ name }) => `<li>${icons.handle} ${name}</li>`)
+            .join("");
+
+        new Sortable(menuTracks, {
+            handle: ".menu__content__tracks > li > svg", // handle's class
+            animation: 150,
+        });
 
         const manageMenu = () => {
             state.menuOpen = !state.menuOpen;
@@ -100,10 +109,6 @@ const app = {
             const styles = getComputedStyle(menuToggle);
             const toggleSize = styles.getPropertyValue("--toggle-size");
             const menuMargin = styles.getPropertyValue("--menu-margin");
-
-            menuTracks.innerHTML = state.tracks
-                .map(({ name }) => `<li>${icons.handle} ${name}</li>`)
-                .join("");
 
             if (state.menuOpen) {
                 menuToggle.style.transform = "rotate(180deg)";
@@ -150,7 +155,10 @@ const app = {
 
         // backwards
         backwardsOption.addEventListener("click", () => {
-            state.tracks[state.currentTrack].audio.currentTime -= 10;
+            const currentTrack = state.tracks[state.currentTrack];
+
+            currentTrack.audio.currentTime -= 10;
+            currentTrack.visualizer.rotate -= 10;
         });
 
         // play/pause
@@ -168,7 +176,10 @@ const app = {
 
         // forwards
         forwardsOption.addEventListener("click", () => {
-            state.tracks[state.currentTrack].audio.currentTime += 10;
+            const currentTrack = state.tracks[state.currentTrack];
+
+            currentTrack.audio.currentTime += 10;
+            currentTrack.visualizer.rotate += 10;
         });
     },
 };
