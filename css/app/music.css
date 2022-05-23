@@ -161,7 +161,17 @@
     margin: 0;
 }
 
-.menu__content__controls {
+.menu__content__tracks > li {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.menu__content__tracks > li > svg {
+    cursor: pointer;
+}
+
+.controls {
     width: 100%;
     margin: 1rem 0 0 0;
     display: flex;
@@ -169,10 +179,25 @@
     justify-content: space-between;
 }
 
-/*
+.controls__icon {
+    border: none;
+    border-radius: 50%;
 
-<div class="menu__content">
-                        <div class="menu__content__tracks"></div>
+    outline: none;
+    border: 1px solid #eee;
+    background-color: #fff;
 
-                        <div class="menu__content__controls">
-*/
+    height: var(--toggle-size);
+    width: var(--toggle-size);
+
+    display: grid;
+    place-items: center;
+
+    cursor: pointer;
+
+    transition: border-color 100ms ease-in-out;
+}
+
+.controls__icon:hover {
+    border-color: var(--primary);
+}

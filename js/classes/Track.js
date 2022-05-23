@@ -21,20 +21,24 @@ export default class Track {
     }
 
     activateStereo() {
-        const audioContext = new AudioContext();
-        const audioSource = audioContext.createMediaElementSource(this.audio);
-        const analyserNode = audioContext.createAnalyser();
-        const stereoNode = new StereoPannerNode(audioContext, { pan: 0 });
+        try {
+            const audioContext = new AudioContext();
+            const audioSource = audioContext.createMediaElementSource(
+                this.audio
+            );
+            const analyserNode = audioContext.createAnalyser();
+            const stereoNode = new StereoPannerNode(audioContext, { pan: 0 });
 
-        audioSource
-            .connect(stereoNode)
-            .connect(analyserNode)
-            .connect(audioContext.destination);
+            audioSource
+                .connect(stereoNode)
+                .connect(analyserNode)
+                .connect(audioContext.destination);
 
-        analyserNode.fftSize = 128;
+            analyserNode.fftSize = 128;
 
-        this.analyser = analyserNode;
-        this.stereo = stereoNode;
+            this.analyser = analyserNode;
+            this.stereo = stereoNode;
+        } catch (e) {}
     }
 
     activateVisualizer(container) {
@@ -43,6 +47,10 @@ export default class Track {
 
     get duration() {
         return this.audio.duration || 0;
+    }
+
+    get playing() {
+        return !this.audio.paused;
     }
 
     static formatTime(duration) {

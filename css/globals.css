@@ -55,6 +55,10 @@ body {
     width: 100vw;
 }
 
+.util-nopointer {
+    pointer-events: none;
+}
+
 a,
 .util-link {
     color: var(--primary);

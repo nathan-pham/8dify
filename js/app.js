@@ -92,13 +92,18 @@ const app = {
 
         // menu toggle
         const menuToggle = $(tabs.music, ".menu__toggle");
-        gsap.from(menuToggle, { y: 100, ease: "expo.inOut", delay: 0.5 });
-        menuToggle.addEventListener("click", () => {
+        const menuTracks = $(tabs.music, ".menu__content__tracks");
+
+        const manageMenu = () => {
             state.menuOpen = !state.menuOpen;
 
             const styles = getComputedStyle(menuToggle);
             const toggleSize = styles.getPropertyValue("--toggle-size");
             const menuMargin = styles.getPropertyValue("--menu-margin");
+
+            menuTracks.innerHTML = state.tracks
+                .map(({ name }) => `<li>${icons.handle} ${name}</li>`)
+                .join("");
 
             if (state.menuOpen) {
                 menuToggle.style.transform = "rotate(180deg)";
@@ -120,6 +125,50 @@ const app = {
                     delay: 0.1,
                 });
             }
+        };
+
+        gsap.from(menuToggle, { y: 100, ease: "expo.inOut", delay: 0.5 });
+        $(".screen").addEventListener("click", (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+
+            if (
+                e.target === menuToggle ||
+                (e.target === $(".screen") && state.menuOpen)
+            ) {
+                manageMenu();
+            }
+
+            return false;
+        });
+
+        // menu options
+        const [backwardsOption, pauseOption, forwardsOption] = $$(
+            tabs.music,
+            ".controls__icon"
+        );
+
+        // backwards
+        backwardsOption.addEventListener("click", () => {
+            state.tracks[state.currentTrack].audio.currentTime -= 10;
+        });
+
+        // play/pause
+        pauseOption.addEventListener("click", () => {
+            const currentTrack = state.tracks[state.currentTrack];
+
+            if (currentTrack.playing) {
+                currentTrack.pause();
+                pauseOption.innerHTML = icons.play;
+            } else {
+                currentTrack.play();
+                pauseOption.innerHTML = icons.pause;
+            }
+        });
+
+        // forwards
+        forwardsOption.addEventListener("click", () => {
+            state.tracks[state.currentTrack].audio.currentTime += 10;
         });
     },
 };
