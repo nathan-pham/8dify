@@ -46,6 +46,8 @@ export default class Drag {
 
     static async fileToTrack(file) {
         const url = URL.createObjectURL(file);
+        const name = file.name.split(".").shift();
+
         const cover = await Drag.getCover();
         const audio = new Audio(url);
 
@@ -55,7 +57,7 @@ export default class Drag {
 
                 resolve(
                     new Track({
-                        name: file.name,
+                        name,
                         cover,
                         audio,
                     })
@@ -69,8 +71,8 @@ export default class Drag {
         });
     }
 
-    static async getCover() {
-        return fetch("https://source.unsplash.com/500x500/?future").then(
+    static async getCover(query = "future") {
+        return fetch(`https://source.unsplash.com/500x500/?${query}`).then(
             (res) => res.url
         );
     }

@@ -5,6 +5,8 @@
     width: 100vw;
     overflow: hidden;
     background-color: var(--background);
+
+    user-select: none;
 }
 
 /* track component */
@@ -86,3 +88,91 @@
     overflow-x: hidden;
     text-overflow: ellipsis;
 }
+
+/* menu */
+.screen {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100vh;
+    width: 100vw;
+    z-index: 10;
+    transition: background-color 500ms ease-in-out;
+}
+
+.screen-bg {
+    background-color: rgba(0, 0, 0, 0.2);
+}
+
+.menu {
+    --toggle-size: 2.5rem;
+    --menu-margin: 1rem;
+
+    position: absolute;
+    left: 50%;
+    top: calc(100vh - var(--toggle-size) - var(--menu-margin));
+    /* bottom: var(--menu-margin); */
+    transform: translateX(-50%);
+
+    z-index: 20;
+
+    width: 20rem;
+    height: fit-content;
+}
+
+.menu__toggle {
+    margin: 0 auto;
+
+    border-radius: 50%;
+    border: 1px solid #eee;
+
+    height: var(--toggle-size);
+    width: var(--toggle-size);
+
+    display: grid;
+    place-items: center;
+
+    background: #fff;
+
+    cursor: pointer;
+
+    transition: border 100ms ease-in-out, box-shadow 100ms ease-in-out,
+        transform 100ms ease-in-out, color 100ms ease-in-out;
+}
+
+.menu__toggle:hover {
+    border: 1px solid var(--primary);
+    /* box-shadow: 0 0.5rem 1rem var(--primary-shadow);
+    transform: translateY(-0.5rem); */
+}
+
+.menu__content {
+    margin: var(--menu-margin) 0 0 0;
+    background: #fff;
+    padding: 1.25rem;
+    border-radius: 0.75rem;
+    border: 1px solid #eee;
+}
+
+.menu__content__tracks {
+    list-style: none;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+}
+
+.menu__content__controls {
+    width: 100%;
+    margin: 1rem 0 0 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+/*
+
+<div class="menu__content">
+                        <div class="menu__content__tracks"></div>
+
+                        <div class="menu__content__controls">
+*/

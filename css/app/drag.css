@@ -10,7 +10,6 @@
 
     border: 1px solid #eee;
     border-radius: 0.75rem;
-    /* box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.125); */
 
     transition: border 100ms ease-in-out, box-shadow 100ms ease-in-out,
         transform 100ms ease-in-out;

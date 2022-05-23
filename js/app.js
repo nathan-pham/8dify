@@ -2,6 +2,7 @@ import Drag from "./classes/Drag.js";
 import Track from "./classes/Track.js";
 
 import { $, $$ } from "./utils/query.js";
+import * as icons from "./libs/icons.js";
 
 import gsap from "https://esm.sh/gsap";
 
@@ -10,6 +11,8 @@ const state = {
 
     tracks: [],
     currentTrack: 0,
+
+    menuOpen: false,
 };
 
 const navigateTo = (newTab) => {
@@ -65,6 +68,7 @@ const app = {
     },
 
     music: () => {
+        // update track
         const currentTrack = state.tracks[state.currentTrack];
 
         $(tabs.music, ".track__cd img").src = currentTrack.cover;
@@ -74,17 +78,49 @@ const app = {
         times[1].textContent = Track.formatTime(currentTrack.duration);
 
         state.tracks.forEach((track) => {
-            track.audio.addEventListener("timeupdate", (e) => {
+            track.activateVisualizer($(tabs.music, ".track__sound"));
+
+            track.onTimeUpdate((e) => {
                 const time = e.target.currentTime;
 
                 times[0].textContent = Track.formatTime(time);
                 track.stereo.pan.value = Math.sin(time / Math.PI);
             });
-
-            track.activateVisualizer($(tabs.music, ".track__sound"));
         });
 
         currentTrack.play();
+
+        // menu toggle
+        const menuToggle = $(tabs.music, ".menu__toggle");
+        gsap.from(menuToggle, { y: 100, ease: "expo.inOut", delay: 0.5 });
+        menuToggle.addEventListener("click", () => {
+            state.menuOpen = !state.menuOpen;
+
+            const styles = getComputedStyle(menuToggle);
+            const toggleSize = styles.getPropertyValue("--toggle-size");
+            const menuMargin = styles.getPropertyValue("--menu-margin");
+
+            if (state.menuOpen) {
+                menuToggle.style.transform = "rotate(180deg)";
+                $(".screen").classList.add("screen-bg");
+
+                gsap.to(".menu", {
+                    // prettier-ignore
+                    top: `calc(100vh - ${menuMargin} - ${$(".menu").offsetHeight}px)`,
+                    ease: "expo.inOut",
+                    delay: 0.1,
+                });
+            } else {
+                menuToggle.style.transform = "rotate(0)";
+                $(".screen").classList.remove("screen-bg");
+
+                gsap.to(".menu", {
+                    top: `calc(100vh - ${toggleSize} - ${menuMargin})`,
+                    ease: "expo.inOut",
+                    delay: 0.1,
+                });
+            }
+        });
     },
 };
 

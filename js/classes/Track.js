@@ -8,12 +8,16 @@ export default class Track {
     constructor(props) {
         Object.assign(this, props);
 
-        this.formatName();
         this.activateStereo();
+
+        this.onTimeUpdateCb = () => {};
+        this.audio.addEventListener("timeupdate", (e) => {
+            this.onTimeUpdateCb(e);
+        });
     }
 
-    formatName() {
-        this.name = this.name.split(".").shift();
+    onTimeUpdate(cb) {
+        this.onTimeUpdateCb = cb;
     }
 
     activateStereo() {
