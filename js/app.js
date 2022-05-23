@@ -1,12 +1,16 @@
 import Drag from "./classes/Drag.js";
+import Track from "./classes/Track.js";
 
-import { $ } from "./utils/query.js";
+import { $, $$ } from "./utils/query.js";
 
 import gsap from "https://esm.sh/gsap";
 
-let currentTab;
+const state = {
+    currentTab: null,
 
-const dragComponent = new Drag({ element: ".drag" });
+    tracks: [],
+    currentTrack: 0,
+};
 
 const navigateTo = (newTab) => {
     const initialState = {
@@ -25,17 +29,17 @@ const navigateTo = (newTab) => {
             ease: "expo.inOut",
         });
 
-        currentTab = newTab;
+        state.currentTab = newTab;
     };
 
-    if (tabs.hasOwnProperty(currentTab)) {
-        gsap.to(tabs[currentTab], {
+    if (tabs.hasOwnProperty(state.currentTab)) {
+        gsap.to(tabs[state.currentTab], {
             ...initialState,
             ease: "expo.inOut",
             onComplete: () => {
                 // reset old tab
-                tabs[currentTab].classList.remove("app-tab");
-                tabs[currentTab].style = "";
+                tabs[state.currentTab].classList.remove("app-tab");
+                tabs[state.currentTab].style = "";
 
                 animateNewTab();
             },
@@ -52,13 +56,35 @@ const tabs = {
 
 const app = {
     drag: () => {
+        const dragComponent = new Drag({ element: ".drag" });
+
         dragComponent.onComplete(() => {
+            state.tracks = dragComponent.tracks;
             navigateTo("music");
         });
     },
 
     music: () => {
-        $(tabs.music, ".track__cd img").src = dragComponent.tracks[0].cover;
+        const currentTrack = state.tracks[state.currentTrack];
+
+        $(tabs.music, ".track__cd img").src = currentTrack.cover;
+        $(tabs.music, ".track__title").textContent = currentTrack.name;
+
+        const times = $$(tabs.music, ".track__time time");
+        times[1].textContent = Track.formatTime(currentTrack.duration);
+
+        state.tracks.forEach((track) => {
+            track.audio.addEventListener("timeupdate", (e) => {
+                const time = e.target.currentTime;
+
+                times[0].textContent = Track.formatTime(time);
+                track.stereo.pan.value = Math.sin(time / Math.PI);
+            });
+
+            track.activateVisualizer($(tabs.music, ".track__sound"));
+        });
+
+        currentTrack.play();
     },
 };
 

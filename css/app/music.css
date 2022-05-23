@@ -12,6 +12,9 @@
     position: relative;
     margin: 0;
     user-select: none;
+
+    height: 22rem;
+    width: 22rem;
 }
 
 .track__cd::before {
@@ -46,11 +49,14 @@
 }
 
 .track__cd img {
-    position: relative;
+    position: absolute;
+    top: 0;
+    left: 0;
+
     border-radius: 50%;
     border: 1px solid #eee;
-    height: 22rem;
-    width: 22rem;
+    width: 100%;
+    height: 100%;
     object-fit: cover;
 
     animation: 30s util-spin infinite linear;
@@ -59,10 +65,15 @@
 .track__sound {
     width: 100%;
     height: 2rem;
-    /* background: red; */
+}
+
+.track__sound canvas {
+    height: 100%;
+    width: 100%;
 }
 
 .track__time {
+    margin: 0.25rem 0 0 0;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -70,15 +81,8 @@
 
 .track__title {
     margin: 0;
+    max-width: 80%;
+    white-space: nowrap;
+    overflow-x: hidden;
+    text-overflow: ellipsis;
 }
-
-/*                 <main class="track">
-
-                    <div class="track__sound"></div>
-                    <div class="track__time">
-                        <time>00:00</time>
-                        <time>00:00</time>
-                    </div>
-
-                    <p class="track__title">Untitled Song</p>
-                </main> */
