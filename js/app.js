@@ -122,8 +122,6 @@ const app = {
                     (trackA, trackB) =>
                         items.indexOf(trackA.name) - items.indexOf(trackB.name)
                 );
-
-                console.log(items, state.tracks);
             },
         });
 
