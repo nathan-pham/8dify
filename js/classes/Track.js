@@ -5,20 +5,35 @@ export default class Track {
     name = "Untitled Track";
     audio = null;
     cover = "";
+    url = "";
 
     constructor(props) {
         Object.assign(this, props);
 
         this.activateStereo();
+        this.initEventListeners();
+    }
 
+    initEventListeners() {
         this.onTimeUpdateCb = () => {};
-        this.audio.addEventListener("timeupdate", (e) => {
-            this.onTimeUpdateCb(e);
+        this.onEndCb = () => {};
+
+        // add event listeners
+        // prettier-ignore
+        this.audio.addEventListener("timeupdate", (e) => this.onTimeUpdateCb(e));
+        this.audio.addEventListener("ended", (e) => this.onEndCb(e));
+
+        window.addEventListener("beforeunload", () => {
+            URL.revokeObjectURL(this.url);
         });
     }
 
     onTimeUpdate(cb) {
         this.onTimeUpdateCb = cb;
+    }
+
+    onEnd(cb) {
+        this.onEndCb = cb;
     }
 
     activateStereo() {

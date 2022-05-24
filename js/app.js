@@ -70,14 +70,9 @@ const app = {
 
     music: () => {
         // update track
-        const currentTrack = state.tracks[state.currentTrack];
-
-        $(tabs.music, ".track__cd img").src = currentTrack.cover;
-        $(tabs.music, ".track__title").textContent = currentTrack.name;
-
         const times = $$(tabs.music, ".track__time time");
-        times[1].textContent = Track.formatTime(currentTrack.duration);
 
+        // add event listeners to tracks
         state.tracks.forEach((track) => {
             track.activateVisualizer($(tabs.music, ".track__sound"));
 
@@ -87,9 +82,28 @@ const app = {
                 times[0].textContent = Track.formatTime(time);
                 track.stereo.pan.value = Math.sin(time / Math.PI);
             });
+
+            track.onEnd(() => {
+                state.tracks[state.currentTrack].pause();
+                state.currentTrack =
+                    (state.currentTrack + 1) % state.tracks.length;
+                updateTrack();
+            });
         });
 
-        currentTrack.play();
+        // update dom
+        const updateTrack = () => {
+            const currentTrack = state.tracks[state.currentTrack];
+
+            $(tabs.music, ".track__cd img").src = currentTrack.cover;
+            $(tabs.music, ".track__title").textContent = currentTrack.name;
+
+            times[1].textContent = Track.formatTime(currentTrack.duration);
+
+            currentTrack.play();
+        };
+
+        updateTrack();
 
         // menu toggle
         const menuToggle = $(tabs.music, ".menu__toggle");
@@ -101,6 +115,16 @@ const app = {
         new Sortable(menuTracks, {
             handle: ".menu__content__tracks > li > svg", // handle's class
             animation: 150,
+            onEnd: (e) => {
+                const items = [...e.to.children].map((el) => el.textContent);
+
+                state.tracks = [...state.tracks].sort(
+                    (trackA, trackB) =>
+                        items.indexOf(trackA.name) - items.indexOf(trackB.name)
+                );
+
+                console.log(items, state.tracks);
+            },
         });
 
         const manageMenu = () => {

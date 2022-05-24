@@ -53,10 +53,9 @@ export default class Drag {
 
         return new Promise((resolve, reject) => {
             audio.addEventListener("canplaythrough", () => {
-                URL.revokeObjectURL(url);
-
                 resolve(
                     new Track({
+                        url,
                         name,
                         cover,
                         audio,
@@ -71,10 +70,10 @@ export default class Drag {
         });
     }
 
-    static async getCover(query = "future") {
-        return fetch(`https://source.unsplash.com/500x500/?${query}`).then(
-            (res) => res.url
-        );
+    static async getCover(query = "japan") {
+        return fetch(`https://source.unsplash.com/500x500/?${query}`, {
+            cache: "no-store",
+        }).then((res) => res.url);
     }
 
     async handleFiles(files) {
